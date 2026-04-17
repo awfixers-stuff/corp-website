@@ -1,4 +1,4 @@
-import { createServerFeature } from '@awfixers-stuff/richtext-lexical'
+import { createServerFeature } from '@payloadcms/richtext-lexical'
 import { LabelNode } from '@root/fields/richText/features/label/LabelNode'
 
 export const LabelFeature = createServerFeature({

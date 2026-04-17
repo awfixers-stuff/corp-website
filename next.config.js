@@ -1,4 +1,4 @@
-import { withPayload } from '@awfixers-stuff/next/withPayload'
+import { withPayload } from '@payloadcms/next/withPayload'
 import path from 'path'
 import { fileURLToPath } from 'node:url'
 const filename = fileURLToPath(import.meta.url)
@@ -94,7 +94,6 @@ const nextConfig = withBundleAnalyzer({
     resolveAlias: {
       '@scss': path.resolve(dirname, './src/css/'),
       '@components': path.resolve(dirname, './src/components.js'),
-      '@cloud': path.resolve(dirname, './src/app/cloud'),
       '@forms': path.resolve(dirname, './src/forms'),
       '@blocks': path.resolve(dirname, './src/blocks'),
       '@providers': path.resolve(dirname, './src/providers'),
@@ -118,7 +117,6 @@ const nextConfig = withBundleAnalyzer({
         ...config.resolve.alias,
         '@scss': path.resolve(dirname, './src/css/'),
         '@components': path.resolve(dirname, './src/components.js'),
-        '@cloud': path.resolve(dirname, './src/app/cloud'),
         '@forms': path.resolve(dirname, './src/forms'),
         '@blocks': path.resolve(dirname, './src/blocks'),
         '@providers': path.resolve(dirname, './src/providers'),

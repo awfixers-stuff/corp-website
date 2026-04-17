@@ -28,9 +28,6 @@
       "@blocks/*": [
         "./src/components/blocks/*"
       ],
-      "@cloud/*": [
-        "./src/app/(frontend)/(cloud)/cloud/*"
-      ],
       "@components/*": [
         "./src/components/*"
       ],

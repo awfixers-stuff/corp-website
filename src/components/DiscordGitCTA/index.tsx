@@ -1,4 +1,3 @@
-import { DiscordUsersPill } from '@components/DiscordUsersPill/index'
 import { GithubStarsPill } from '@components/GithubStarsPill/index'
 import { ArrowIcon } from '@root/icons/ArrowIcon/index'
 import Link from 'next/link'
@@ -7,8 +6,6 @@ import React from 'react'
 import classes from './index.module.scss'
 
 const gitURL = 'https://github.com/awfixers-stuff/payload'
-
-const discordURL = 'https://discord.awfixer.me'
 
 export const DiscordGitCTA: React.FC<{ appearance?: 'default' | 'minimal' }> = ({ appearance }) => {
   return (
@@ -23,15 +20,6 @@ export const DiscordGitCTA: React.FC<{ appearance?: 'default' | 'minimal' }> = (
         </div>
       </Link>
 
-      <Link aria-label="Chat on Discord" className={classes.cta} href={discordURL} target="_blank">
-        <div className={classes.message}>
-          Chat on Discord
-          <ArrowIcon className={classes.arrow} />
-        </div>
-        <div className={classes.discordButton}>
-          <DiscordUsersPill className={classes.ctaPill} />
-        </div>
-      </Link>
       {appearance === 'default' && (
         <div className={classes.enterpriseCTA}>
           <strong>Can&apos;t find what you&apos;re looking for?</strong>

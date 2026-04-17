@@ -1,5 +1,5 @@
-import payloadEsLintConfig from '@awfixers-stuff/eslint-config'
-import payloadPlugin from '@awfixers-stuff/eslint-plugin'
+import payloadEsLintConfig from '@payloadcms/eslint-config'
+import payloadPlugin from '@payloadcms/eslint-plugin'
 
 export const defaultESLintIgnores = [
   '**/.temp',

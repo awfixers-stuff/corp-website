@@ -1,4 +1,4 @@
-import type { DefaultTypedEditorState } from '@awfixers-stuff/richtext-lexical'
+import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 export interface Example {
   drawerContent?: DefaultTypedEditorState

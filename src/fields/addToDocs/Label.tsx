@@ -2,7 +2,7 @@
 
 import type { TextFieldClientComponent } from 'payload'
 
-import { CopyToClipboard, useField } from '@awfixers-stuff/ui'
+import { CopyToClipboard, useField } from '@payloadcms/ui'
 
 import classes from './index.module.scss'
 

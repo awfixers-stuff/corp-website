@@ -1,4 +1,4 @@
-import type { DefaultTypedEditorState } from '@awfixers-stuff/richtext-lexical'
+import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { Drawer, DrawerToggler } from '@components/Drawer/index'
 import { ChevronIcon } from '@root/icons/ChevronIcon/index'

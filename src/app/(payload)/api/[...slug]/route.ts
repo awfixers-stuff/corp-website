@@ -9,7 +9,7 @@ import {
   REST_PATCH,
   REST_POST,
   REST_PUT,
-} from '@awfixers-stuff/next/routes'
+} from '@payloadcms/next/routes'
 
 export const GET = REST_GET(config)
 export const POST = REST_POST(config)

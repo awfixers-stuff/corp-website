@@ -30,8 +30,7 @@ const isDiscussionData = (
     upvotes: number
     url: string
   }
-  communityHelpType?: 'discord' | 'github'
-  discordID?: string
+  communityHelpType?: 'github'
   githubID?: string
   id: string
   slug?: string

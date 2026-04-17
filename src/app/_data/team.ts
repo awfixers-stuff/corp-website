@@ -1,7 +1,6 @@
 export const TEAM = `id
 name
 slug
-stripeCustomerID
 billingEmail
 isEnterprise
 members {

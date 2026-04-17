@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 
-import { lexicalEditor } from '@awfixers-stuff/richtext-lexical'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
 
 import { bannerTypes } from '../shared'
 

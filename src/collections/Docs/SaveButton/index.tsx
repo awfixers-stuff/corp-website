@@ -14,7 +14,7 @@ import {
   useHotkey,
   useLocale,
   useOperation,
-} from '@awfixers-stuff/ui'
+} from '@payloadcms/ui'
 import { useSearchParams } from 'next/navigation'
 import * as qs from 'qs-esm'
 import React, { useRef } from 'react'

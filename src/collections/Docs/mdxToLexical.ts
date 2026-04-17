@@ -8,13 +8,13 @@ import {
   type SanitizedServerEditorConfig,
   type SerializedBlockNode,
   ServerBlockNode,
-} from '@awfixers-stuff/richtext-lexical'
-import { createHeadlessEditor } from '@awfixers-stuff/richtext-lexical/lexical/headless'
+} from '@payloadcms/richtext-lexical'
+import { createHeadlessEditor } from '@payloadcms/richtext-lexical/lexical/headless'
 import {
   $convertToMarkdownString,
   type ElementTransformer,
-} from '@awfixers-stuff/richtext-lexical/lexical/markdown'
-import { hasText } from '@awfixers-stuff/richtext-lexical/shared'
+} from '@payloadcms/richtext-lexical/lexical/markdown'
+import { hasText } from '@payloadcms/richtext-lexical/shared'
 import { deepCopyObjectSimple } from 'payload'
 
 export const UploadBlockMarkdownTransformer: ElementTransformer = {

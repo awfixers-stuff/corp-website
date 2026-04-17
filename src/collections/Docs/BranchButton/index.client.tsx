@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactSelect } from '@awfixers-stuff/ui'
+import { ReactSelect } from '@payloadcms/ui'
 
 import './index.scss'
 

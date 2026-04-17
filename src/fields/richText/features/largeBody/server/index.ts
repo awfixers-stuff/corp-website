@@ -1,4 +1,4 @@
-import { createServerFeature } from '@awfixers-stuff/richtext-lexical'
+import { createServerFeature } from '@payloadcms/richtext-lexical'
 import { LargeBodyNode } from '@root/fields/richText/features/largeBody/LargeBodyNode'
 
 export const LargeBodyFeature = createServerFeature({

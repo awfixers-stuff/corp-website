@@ -1,4 +1,4 @@
-import type { Messages } from '@root/app/(frontend)/(pages)/community-help/(posts)/discord/[slug]/client_page'
+import type { Messages } from '@root/types/community-help'
 import type {
   Answer,
   Comment,

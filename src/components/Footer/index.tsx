@@ -12,7 +12,6 @@ import { Text } from '@forms/fields/Text/index'
 import FormComponent from '@forms/Form/index'
 import { validateEmail } from '@forms/validations'
 import { ArrowIcon } from '@icons/ArrowIcon/index'
-import { DiscordIcon } from '@root/graphics/DiscordIcon/index'
 import { FacebookIcon } from '@root/graphics/FacebookIcon/index'
 import { InstagramIcon } from '@root/graphics/InstagramIcon/index'
 import { ThemeAutoIcon } from '@root/graphics/ThemeAutoIcon/index'
@@ -140,15 +139,6 @@ export const Footer: React.FC<FooterType> = (props) => {
                 target="_blank"
               >
                 <TwitterIconAlt />
-              </a>
-              <a
-                aria-label="Payload's Discord"
-                className={classes.socialIconLink}
-                href="https://discord.awfixer.me"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <DiscordIcon />
               </a>
               <a
                 aria-label="Payload's YouTube channel"

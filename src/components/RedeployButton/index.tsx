@@ -1,6 +1,6 @@
 'use client'
 
-import { useConfig } from '@awfixers-stuff/ui'
+import { useConfig } from '@payloadcms/ui'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
 

@@ -1,7 +1,7 @@
 import type { TopicGroup } from '@root/collections/Docs/types'
 import type { PayloadHandler, PayloadRequest, RequiredDataFromCollectionSlug } from 'payload'
 
-import { sanitizeServerEditorConfig } from '@awfixers-stuff/richtext-lexical'
+import { sanitizeServerEditorConfig } from '@payloadcms/richtext-lexical'
 import { contentLexicalEditorFeatures } from '@root/collections/Docs'
 import { mdxToLexical } from '@root/collections/Docs/mdxToLexical'
 

@@ -1,4 +1,4 @@
-import type { SerializedHeadingNode, SerializedTextNode } from '@awfixers-stuff/richtext-lexical'
+import type { SerializedHeadingNode, SerializedTextNode } from '@payloadcms/richtext-lexical'
 
 import { ChainLinkIcon } from '@icons/ChainLinkIcon'
 import slugify from '@root/utilities/slugify'

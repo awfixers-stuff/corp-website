@@ -1,24 +1,20 @@
 import { revalidateRedirects } from '@hooks/revalidateRedirects'
-import { mongooseAdapter } from '@awfixers-stuff/db-mongodb'
-import { nodemailerAdapter } from '@awfixers-stuff/email-nodemailer'
-import { formBuilderPlugin } from '@awfixers-stuff/plugin-form-builder'
-import { nestedDocsPlugin } from '@awfixers-stuff/plugin-nested-docs'
-import { redirectsPlugin } from '@awfixers-stuff/plugin-redirects'
-import { seoPlugin } from '@awfixers-stuff/plugin-seo'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
+import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import {
   BlocksFeature,
   EXPERIMENTAL_TableFeature,
   lexicalEditor,
   LinkFeature,
   UploadFeature,
-} from '@awfixers-stuff/richtext-lexical'
-import { vercelBlobStorage } from '@awfixers-stuff/storage-vercel-blob'
+} from '@payloadcms/richtext-lexical'
 import link from '@root/fields/link'
 import { LabelFeature } from '@root/fields/richText/features/label/server'
 import { LargeBodyFeature } from '@root/fields/richText/features/largeBody/server'
-import { googleAnalytics } from '@zubricks/plugin-google-analytics'
 import { revalidateTag } from 'next/cache'
-import nodemailerSendgrid from 'nodemailer-sendgrid'
 import path from 'path'
 import { buildConfig, type TextField } from 'payload'
 import { fileURLToPath } from 'url'
@@ -87,14 +83,6 @@ import { refreshMdxToLexical, syncDocs } from './scripts/syncDocs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
-const sendGridAPIKey = process.env.SENDGRID_API_KEY
-
-const sendgridConfig = {
-  transportOptions: nodemailerSendgrid({
-    apiKey: sendGridAPIKey,
-  }),
-}
 
 export default buildConfig({
   admin: {
@@ -298,11 +286,7 @@ export default buildConfig({
     Regions,
     Budgets,
   ],
-  cors: [
-    process.env.PAYLOAD_PUBLIC_APP_URL || '',
-    'https://corp.awfixer.me',
-    'https://discord.com/api',
-  ].filter(Boolean),
+  cors: [process.env.PAYLOAD_PUBLIC_APP_URL || '', 'https://corp.awfixer.me'].filter(Boolean),
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
@@ -367,11 +351,6 @@ export default buildConfig({
       }),
     ],
   }),
-  email: nodemailerAdapter({
-    defaultFromAddress: 'info@corp.awfixer.me',
-    defaultFromName: 'Payload',
-    ...sendgridConfig,
-  }),
   endpoints: [
     {
       handler: syncDocs,
@@ -397,10 +376,6 @@ export default buildConfig({
     opsCounterPlugin({
       max: 200,
       warnAt: 25,
-    }),
-    googleAnalytics({
-      // Optional: Configure which widgets to enable
-      enabledWidgets: ['analytics-overview', 'top-pages', 'active-users', 'channel-groups'],
     }),
     formBuilderPlugin({
       formOverrides: {
@@ -579,16 +554,6 @@ export default buildConfig({
           afterChange: [revalidateRedirects],
         },
       },
-    }),
-    vercelBlobStorage({
-      cacheControlMaxAge: 60 * 60 * 24 * 365, // 1 year
-      collections: {
-        media: {
-          generateFileURL: ({ filename }) => `https://${process.env.BLOB_STORE_ID}/${filename}`,
-        },
-      },
-      enabled: Boolean(process.env.BLOB_STORAGE_ENABLED) || false,
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),
   ],
   secret: process.env.PAYLOAD_SECRET || '',

@@ -2,7 +2,7 @@
 
 import type { CodeFieldClientProps } from 'payload'
 
-import { CodeField, useFormFields } from '@awfixers-stuff/ui'
+import { CodeField, useFormFields } from '@payloadcms/ui'
 import React, { useMemo } from 'react'
 
 import { languages } from '../shared'

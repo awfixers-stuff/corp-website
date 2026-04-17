@@ -1,6 +1,6 @@
 import type { CustomComponent, PayloadServerReactComponent } from 'payload'
 
-import { ShimmerEffect } from '@awfixers-stuff/ui'
+import { ShimmerEffect } from '@payloadcms/ui'
 import React from 'react'
 
 import { fetchAllBranches } from './fetchAllBranches'

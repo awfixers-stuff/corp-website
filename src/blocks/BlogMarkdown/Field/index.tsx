@@ -1,4 +1,4 @@
-import { TextareaField } from '@awfixers-stuff/ui'
+import { TextareaField } from '@payloadcms/ui'
 import React from 'react'
 
 import './index.scss'

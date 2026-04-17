@@ -8,15 +8,15 @@ import type {
   RangeSelection,
   SerializedElementNode,
   Spread,
-} from '@awfixers-stuff/richtext-lexical/lexical'
+} from '@payloadcms/richtext-lexical/lexical'
 
 import {
   $applyNodeReplacement,
   $createParagraphNode,
   ElementNode,
   isHTMLElement,
-} from '@awfixers-stuff/richtext-lexical/lexical'
-import { addClassNamesToElement } from '@awfixers-stuff/richtext-lexical/lexical/utils'
+} from '@payloadcms/richtext-lexical/lexical'
+import { addClassNamesToElement } from '@payloadcms/richtext-lexical/lexical/utils'
 
 export type SerializedLabelNode = Spread<
   {

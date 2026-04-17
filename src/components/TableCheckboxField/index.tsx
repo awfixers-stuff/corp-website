@@ -2,7 +2,7 @@
 import type { TextFieldClientComponent } from 'payload'
 
 import { TableIcon } from '@blocks/ComparisonTable/Icons'
-import { useField } from '@awfixers-stuff/ui'
+import { useField } from '@payloadcms/ui'
 
 import classes from './index.module.scss'
 

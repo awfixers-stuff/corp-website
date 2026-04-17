@@ -11,7 +11,7 @@ import {
   LinkFeature,
   sanitizeServerEditorConfig,
   type SerializedBlockNode,
-} from '@awfixers-stuff/richtext-lexical'
+} from '@payloadcms/richtext-lexical'
 import { fetchSingleDoc } from '@root/scripts/fetchDocs'
 import { topicGroupsToDocsData } from '@root/scripts/syncDocs'
 import { revalidatePath } from 'next/cache'

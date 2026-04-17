@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 
-import { BlocksFeature, lexicalEditor } from '@awfixers-stuff/richtext-lexical'
+import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
 export const RestExamplesBlock: Block = {
   slug: 'RestExamples',

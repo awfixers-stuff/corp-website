@@ -1,6 +1,6 @@
-import type { MigrateDownArgs, MigrateUpArgs } from '@awfixers-stuff/db-mongodb'
+import type { MigrateDownArgs, MigrateUpArgs } from '@payloadcms/db-mongodb'
 
-import { migrateRelationshipsV2_V3 } from '@awfixers-stuff/db-mongodb/migration-utils'
+import { migrateRelationshipsV2_V3 } from '@payloadcms/db-mongodb/migration-utils'
 export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
   await migrateRelationshipsV2_V3({
     batchSize: 100,

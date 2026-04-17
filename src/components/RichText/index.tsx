@@ -1,8 +1,8 @@
 'use client'
 
 import type { Reference } from '@components/CMSLink'
-import type { DefaultNodeTypes, SerializedBlockNode } from '@awfixers-stuff/richtext-lexical'
-import type { SerializedLexicalNode } from '@awfixers-stuff/richtext-lexical/lexical'
+import type { DefaultNodeTypes, SerializedBlockNode } from '@payloadcms/richtext-lexical'
+import type { SerializedLexicalNode } from '@payloadcms/richtext-lexical/lexical'
 import type { SerializedLabelNode } from '@root/fields/richText/features/label/LabelNode'
 import type { SerializedLargeBodyNode } from '@root/fields/richText/features/largeBody/LargeBodyNode'
 import type {
@@ -42,12 +42,12 @@ import YouTube from '@components/YouTube/index'
 
 import './index.scss'
 
-import { useLivePreview } from '@awfixers-stuff/live-preview-react'
+import { useLivePreview } from '@payloadcms/live-preview-react'
 import {
   type JSXConverters,
   type JSXConvertersFunction,
   RichText as SerializedRichText,
-} from '@awfixers-stuff/richtext-lexical/react'
+} from '@payloadcms/richtext-lexical/react'
 import { Download } from '@root/components/blocks/Download'
 import { getVideo } from '@root/utilities/get-video'
 import React, { useCallback, useMemo, useState } from 'react'

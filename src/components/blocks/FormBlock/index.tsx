@@ -8,7 +8,6 @@ import { BlockWrapper } from '@components/BlockWrapper/index'
 import { CMSForm } from '@components/CMSForm/index'
 import { Gutter } from '@components/Gutter/index'
 import { RichText } from '@components/RichText/index'
-import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
 import classes from './index.module.scss'
@@ -20,7 +19,7 @@ export type FormBlockProps = {
 
 export const FormBlock: React.FC<FormBlockProps> = (props) => {
   const { formFields: { form, richText, settings } = {}, hideBackground, padding } = props
-  const [imageLoaded, setImageLoaded] = useState(false)
+  const [gradientVisible, setGradientVisible] = useState(false)
 
   const sectionRef = useRef<HTMLDivElement | null>(null)
   const [outerBackgroundStyle, setOuterBackgroundStyle] = useState({})
@@ -45,7 +44,12 @@ export const FormBlock: React.FC<FormBlockProps> = (props) => {
     updateOuterBackgroundWidth()
     window.addEventListener('resize', updateOuterBackgroundWidth)
 
-    return () => window.removeEventListener('resize', updateOuterBackgroundWidth)
+    const timer = setTimeout(() => setGradientVisible(true), 100)
+
+    return () => {
+      window.removeEventListener('resize', updateOuterBackgroundWidth)
+      clearTimeout(timer)
+    }
   }, [])
 
   if (typeof form === 'string') {
@@ -63,40 +67,10 @@ export const FormBlock: React.FC<FormBlockProps> = (props) => {
       <BackgroundGrid zIndex={0} />
       <div
         className={classes.gradientWrap}
-        style={{ visibility: imageLoaded ? 'visible' : 'hidden' }}
+        style={{ visibility: gradientVisible ? 'visible' : 'hidden' }}
       >
         <div className={classes.leftGradientOverlay} />
         <div className={classes.rightGradientOverlay} />
-      </div>
-      <div
-        className={[classes.backgroundSectionWrap, 'cols-12 start-5 cols-m-8 start-m-1']
-          .filter(Boolean)
-          .join(' ')}
-      >
-        <div className={classes.section} ref={sectionRef}>
-          <Image
-            alt="Stripe Overlay"
-            fill
-            onLoad={() => setImageLoaded(true)}
-            src="/images/stripe-overlay.png"
-          />
-        </div>
-        <div className={classes.section}>
-          <Image
-            alt="Stripe Overlay"
-            fill
-            onLoad={() => setImageLoaded(true)}
-            src="/images/stripe-overlay.png"
-          />
-        </div>
-        <div className={classes.section}>
-          <Image
-            alt="Stripe Overlay"
-            fill
-            onLoad={() => setImageLoaded(true)}
-            src="/images/stripe-overlay.png"
-          />
-        </div>
       </div>
       <Gutter className={classes.gutter}>
         <div className={[classes.formBlockGrid, 'grid'].filter(Boolean).join(' ')}>
@@ -117,14 +91,7 @@ export const FormBlock: React.FC<FormBlockProps> = (props) => {
         </div>
       </Gutter>
       <div className={classes.outerBackgroundSectionWrap}>
-        <div className={classes.outerBackgroundSection} style={outerBackgroundStyle}>
-          <Image
-            alt="Stripe Overlay"
-            fill
-            onLoad={() => setImageLoaded(true)}
-            src="/images/stripe-overlay.png"
-          />
-        </div>
+        <div className={classes.outerBackgroundSection} style={outerBackgroundStyle} />
       </div>
     </BlockWrapper>
   )

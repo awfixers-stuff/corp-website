@@ -1,5 +1,5 @@
 'use client'
-import { hasText } from '@awfixers-stuff/richtext-lexical/shared'
+import { hasText } from '@payloadcms/richtext-lexical/shared'
 import React from 'react'
 
 import { RichText } from '..'

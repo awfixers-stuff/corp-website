@@ -4,7 +4,7 @@ import '@awfixers-stuff/next/css'
 /* THIS FILE WAS GENERATED AUTOMATICALLY BY PAYLOAD. */
 /* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
 import config from '@payload-config'
-import { handleServerFunctions, RootLayout } from '@awfixers-stuff/next/layouts'
+import { handleServerFunctions, RootLayout } from '@payloadcms/next/layouts'
 import React from 'react'
 
 import { importMap } from './admin/importMap.js'

@@ -1,6 +1,5 @@
 import type { CommunityHelp } from '@root/payload-types'
 
-import { DiscordIcon } from '@root/graphics/DiscordIcon/index'
 import { GithubIcon } from '@root/graphics/GithubIcon/index'
 import Link from 'next/link'
 import React from 'react'
@@ -27,8 +26,7 @@ export const RelatedHelpList: React.FC<Props> = ({ relatedThreads }) => {
             const { slug, communityHelpType, title } = thread
             return (
               <li key={i}>
-                {communityHelpType === 'discord' && <DiscordIcon className={classes.itemMarker} />}
-                {communityHelpType === 'github' && <GithubIcon className={classes.itemMarker} />}
+                <GithubIcon className={classes.itemMarker} />
                 <Link href={`/community-help/${communityHelpType}/${slug}`}>{title}</Link>
               </li>
             )

@@ -3,10 +3,23 @@ import type { Metadata } from 'next'
 import { mergeOpenGraph } from '@root/seo/mergeOpenGraph'
 import React from 'react'
 
-import { CommunityHelpPage } from './client_page'
+import { CommunityHelp } from './client_page'
 
-const Page = async (props) => {
-  return <CommunityHelpPage {...props} />
+interface CommunityHelpPost {
+  id: string
+  title: string
+  slug: string
+  communityHelpType: 'github'
+  author?: string
+  createdAt: string
+  upvotes: number
+  messageCount: number
+}
+
+const Page = async () => {
+  const communityHelpPosts: CommunityHelpPost[] = []
+
+  return <CommunityHelp initialPosts={communityHelpPosts} />
 }
 
 export default Page

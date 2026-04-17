@@ -1,9 +1,9 @@
 'use client'
 
-import { ME_QUERY, USER } from '@data/me'
+import { ME_QUERY } from '@data/me'
 import React, { createContext, use, useCallback, useEffect, useRef, useState } from 'react'
 
-import type { User } from '../../payload-cloud-types'
+import type { User } from '../../payload-types'
 
 type ResetPassword = (args: {
   password: string
@@ -12,8 +12,6 @@ type ResetPassword = (args: {
 }) => Promise<void>
 
 type ForgotPassword = (args: { email: string }) => Promise<void>
-
-type Create = (args: { email: string; password: string; passwordConfirm: string }) => Promise<void>
 
 type Login = (args: { email: string; password: string }) => Promise<User>
 
@@ -31,7 +29,7 @@ type AuthContext = {
 
 const Context = createContext({} as AuthContext)
 
-const CLOUD_CONNECTION_ERROR = 'An error occurred while attempting to connect to Payload Cloud'
+const AUTH_ERROR = 'An error occurred while attempting to authenticate'
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<null | undefined | User>(undefined)
@@ -39,17 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = useCallback<Login>(async (args) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_CLOUD_CMS_URL}/api/graphql`, {
-        body: JSON.stringify({
-          query: `mutation {
-              loginUser(email: "${args.email}", password: "${args.password}") {
-                user {
-                  ${USER}
-                }
-                exp
-              }
-            }`,
-        }),
+      const res = await fetch('/api/auth/login', {
+        body: JSON.stringify(args),
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
@@ -57,34 +46,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         method: 'POST',
       })
 
-      const { data, errors } = await res.json()
-
       if (res.ok) {
-        if (errors) {
-          throw new Error(errors[0].message)
-        }
-        setUser(data?.loginUser?.user)
-        return data?.loginUser?.user
+        const userData = await res.json()
+        setUser(userData.user)
+        return userData.user
       }
 
-      throw new Error(errors?.[0]?.message || 'An error occurred while attempting to login.')
+      const error = await res.json()
+      throw new Error(error.message || 'Invalid login credentials')
     } catch (e) {
-      throw new Error(`${CLOUD_CONNECTION_ERROR}: ${e.message}`)
+      throw new Error(`${AUTH_ERROR}: ${e.message}`)
     }
   }, [])
 
   const logout = useCallback<Logout>(async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_CLOUD_CMS_URL}/api/graphql`, {
-        body: JSON.stringify({
-          query: `mutation {
-            logoutUser
-          }`,
-        }),
+      const res = await fetch('/api/auth/logout', {
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         method: 'POST',
       })
 
@@ -94,7 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('An error occurred while attempting to logout.')
       }
     } catch (e) {
-      throw new Error(`${CLOUD_CONNECTION_ERROR}: ${e.message}`)
+      throw new Error(`${AUTH_ERROR}: ${e.message}`)
     }
   }, [])
 
@@ -106,32 +84,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const fetchMe = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_CLOUD_CMS_URL}/api/graphql`, {
-          body: JSON.stringify({
-            query: ME_QUERY,
-          }),
+        const res = await fetch('/api/auth/me', {
           credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           method: 'POST',
         })
 
-        const { data, errors } = await res.json()
-
         if (res.ok) {
-          setUser(data?.meUser?.user || null)
+          const userData = await res.json()
+          setUser(userData.user || null)
         } else {
-          throw new Error(
-            errors?.[0]?.message || 'An error occurred while attempting to fetch user.',
-          )
+          setUser(null)
         }
       } catch (e) {
         setUser(null)
         if (process.env.NEXT_PUBLIC_OMIT_CLOUD_ERRORS === 'true') {
           return
         }
-        throw new Error(`${CLOUD_CONNECTION_ERROR}: ${e.message}`)
+        throw new Error(`${AUTH_ERROR}: ${e.message}`)
       }
     }
 
@@ -140,72 +109,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const forgotPassword = useCallback<ForgotPassword>(async (args) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_CLOUD_CMS_URL}/api/graphql`, {
-        body: JSON.stringify({
-          query: `mutation {
-              forgotPasswordUser(email: "${args.email}") {
-                user {
-                  ${USER}
-                }
-                exp
-              }
-            }`,
-        }),
-        credentials: 'include',
+      const res = await fetch('/api/auth/forgot-password', {
+        body: JSON.stringify(args),
         headers: {
           'Content-Type': 'application/json',
         },
         method: 'POST',
       })
 
-      const { data, errors } = await res.json()
-
-      if (res.ok) {
-        if (errors) {
-          throw new Error(errors[0].message)
-        }
-        setUser(data?.loginUser?.user)
-      } else {
+      if (!res.ok) {
+        const error = await res.json()
         throw new Error(
-          errors?.[0]?.message || 'An error occurred while attempting to reset your password.',
+          error.message || 'An error occurred while attempting to reset your password.',
         )
       }
     } catch (e) {
-      throw new Error(`${CLOUD_CONNECTION_ERROR}: ${e.message}`)
+      throw new Error(`${AUTH_ERROR}: ${e.message}`)
     }
   }, [])
 
   const resetPassword = useCallback<ResetPassword>(async (args) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_CLOUD_CMS_URL}/api/graphql`, {
-        body: JSON.stringify({
-          query: `mutation {
-              resetPasswordUser(password: "${args.password}", token: "${args.token}") {
-                user {
-                  ${USER}
-                }
-              }
-            }`,
-        }),
-        credentials: 'include',
+      const res = await fetch('/api/auth/reset-password', {
+        body: JSON.stringify(args),
         headers: {
           'Content-Type': 'application/json',
         },
         method: 'POST',
       })
 
-      const { data, errors } = await res.json()
-
-      if (res.ok) {
-        if (errors) {
-          throw new Error(errors[0].message)
-        }
-        setUser(data?.resetPasswordUser?.user)
-      } else {
-        throw new Error(errors?.[0]?.message || 'Invalid login')
+      if (!res.ok) {
+        const error = await res.json()
+        throw new Error(error.message || 'Invalid token')
       }
+
+      const userData = await res.json()
+      setUser(userData.user)
     } catch (e) {
-      throw new Error(`${CLOUD_CONNECTION_ERROR}: ${e.message}`)
+      throw new Error(`${AUTH_ERROR}: ${e.message}`)
     }
   }, [])
 
@@ -216,41 +157,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           throw new Error('No user found to update.')
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_CLOUD_CMS_URL}/api/graphql`, {
-          body: JSON.stringify({
-            query: `mutation {
-              updateUser(
-                id: "${user?.id}",
-                data: {
-                  ${Object.entries(incomingUser)
-                    .filter(([key, value]) => value !== undefined)
-                    .map(([key, value]) => `${key}: "${value}"`)
-                    .join(', ')}
-                }
-              ) {
-                ${USER}
-              }
-            }`,
-          }),
+        const res = await fetch(`/api/collections/users/${user.id}`, {
+          body: JSON.stringify(incomingUser),
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
-          method: 'POST',
+          method: 'PATCH',
         })
 
-        const { data, errors } = await res.json()
-
         if (res.ok) {
-          if (errors) {
-            throw new Error(errors[0].message)
-          }
-          setUser(data?.updateUser)
+          const updatedUser = await res.json()
+          setUser(updatedUser.doc)
         } else {
-          throw new Error(errors?.[0]?.message || 'An error occurred while updating your account.')
+          throw new Error('An error occurred while updating your account.')
         }
       } catch (e) {
-        throw new Error(`${CLOUD_CONNECTION_ERROR}: ${e.message}`)
+        throw new Error(`${AUTH_ERROR}: ${e.message}`)
       }
     },
     [user],

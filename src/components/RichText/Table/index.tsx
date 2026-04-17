@@ -2,8 +2,8 @@ import type {
   SerializedTableCellNode,
   SerializedTableNode,
   SerializedTableRowNode,
-} from '@awfixers-stuff/richtext-lexical'
-import type { JSXConverters } from '@awfixers-stuff/richtext-lexical/react'
+} from '@payloadcms/richtext-lexical'
+import type { JSXConverters } from '@payloadcms/richtext-lexical/react'
 
 export const CustomTableJSXConverters: JSXConverters<
   SerializedTableCellNode | SerializedTableNode | SerializedTableRowNode

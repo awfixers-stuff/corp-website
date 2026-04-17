@@ -3,10 +3,10 @@ import {
   createClientFeature,
   getSelectedNode,
   toolbarTextDropdownGroupWithItems,
-} from '@awfixers-stuff/richtext-lexical/client'
-import { $getSelection, $isRangeSelection } from '@awfixers-stuff/richtext-lexical/lexical'
-import { $setBlocksType } from '@awfixers-stuff/richtext-lexical/lexical/selection'
-import { $findMatchingParent } from '@awfixers-stuff/richtext-lexical/lexical/utils'
+} from '@payloadcms/richtext-lexical/client'
+import { $getSelection, $isRangeSelection } from '@payloadcms/richtext-lexical/lexical'
+import { $setBlocksType } from '@payloadcms/richtext-lexical/lexical/selection'
+import { $findMatchingParent } from '@payloadcms/richtext-lexical/lexical/utils'
 import { LargeBodyIcon } from '@root/fields/richText/features/largeBody/client/icon'
 import {
   $createLargeBodyNode,

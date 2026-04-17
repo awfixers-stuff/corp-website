@@ -12,7 +12,6 @@ const PROJECT = `
   name
   repositoryFullName
   makePrivate
-  stripeSubscriptionStatus
   installID
   repositoryID
   deploymentBranch

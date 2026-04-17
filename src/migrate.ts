@@ -1,5 +1,5 @@
 import config from '@payload-config'
-import { migrateSlateToLexical } from '@awfixers-stuff/richtext-lexical/migrate'
+import { migrateSlateToLexical } from '@payloadcms/richtext-lexical/migrate'
 import { getPayload } from 'payload'
 
 async function run() {

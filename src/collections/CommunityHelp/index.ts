@@ -1,8 +1,23 @@
+import type { RichTextField } from 'payload'
+
 import type { CollectionConfig } from 'payload'
 
 import { isAdmin } from '../../access/isAdmin'
-import { extractDescription } from './extract-description'
-import { updateAlgolia } from './updateAlgolia'
+
+function extractTextFromContent(content: unknown[]): string {
+  if (!Array.isArray(content)) return ''
+  return content
+    .map((block) => {
+      if (typeof block === 'object' && block !== null && 'text' in block) {
+        return (block as { text: string }).text
+      }
+      if (typeof block === 'object' && block !== null && 'children' in block) {
+        return extractTextFromContent((block as { children: unknown[] }).children)
+      }
+      return ''
+    })
+    .join(' ')
+}
 
 export const CommunityHelp: CollectionConfig = {
   slug: 'community-help',
@@ -29,10 +44,6 @@ export const CommunityHelp: CollectionConfig = {
       label: 'Community Help Type',
       options: [
         {
-          label: 'Discord Thread',
-          value: 'discord',
-        },
-        {
           label: 'GitHub Discussion',
           value: 'github',
         },
@@ -47,15 +58,7 @@ export const CommunityHelp: CollectionConfig = {
       index: true,
       label: 'GitHub ID',
     },
-    {
-      name: 'discordID',
-      type: 'text',
-      admin: {
-        condition: (_, siblingData) => siblingData?.communityHelpType === 'discord',
-      },
-      index: true,
-      label: 'Discord ID',
-    },
+
     {
       name: 'communityHelpJSON',
       type: 'json',
@@ -68,10 +71,7 @@ export const CommunityHelp: CollectionConfig = {
       hooks: {
         afterRead: [
           ({ data }) => {
-            if (data?.communityHelpType === 'discord') {
-              return extractDescription(data.communityHelpJSON.intro.content)
-            }
-            return extractDescription(data?.communityHelpJSON.body)
+            return extractTextFromContent(data?.communityHelpJSON.body)
           },
         ],
         beforeChange: [
@@ -95,21 +95,6 @@ export const CommunityHelp: CollectionConfig = {
       type: 'checkbox',
       admin: {
         position: 'sidebar',
-      },
-      hooks: {
-        afterChange: [
-          async ({ previousValue, siblingData, value }) => {
-            if (previousValue !== value) {
-              const docID =
-                siblingData.communityHelpType === 'discord'
-                  ? siblingData.discordID
-                  : siblingData.githubID
-              if (docID) {
-                await updateAlgolia(docID, value)
-              }
-            }
-          },
-        ],
       },
     },
     {

@@ -1,4 +1,4 @@
-import type { FeatureProviderServer } from '@awfixers-stuff/richtext-lexical'
+import type { FeatureProviderServer } from '@payloadcms/richtext-lexical'
 import type { RichTextField } from 'payload'
 
 type RichText = (
