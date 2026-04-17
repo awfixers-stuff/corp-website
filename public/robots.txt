@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://corp.awfixer.me
+
+# Sitemaps
+Sitemap: https://corp.awfixer.me/sitemap.xml
