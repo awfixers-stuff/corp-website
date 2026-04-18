@@ -1,3 +1,5 @@
+import type { SerializedEditorState, SerializedLexicalNode } from 'lexical'
+
 import {
   $convertFromMarkdownString,
   $createServerBlockNode,
@@ -6,8 +8,6 @@ import {
   objectToFrontmatter,
   type SanitizedServerEditorConfig,
   type SerializedBlockNode,
-  type SerializedEditorState,
-  type SerializedLexicalNode,
   ServerBlockNode,
 } from '@payloadcms/richtext-lexical'
 import { createHeadlessEditor } from '@payloadcms/richtext-lexical/lexical/headless'
