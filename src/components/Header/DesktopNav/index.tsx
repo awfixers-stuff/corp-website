@@ -18,7 +18,8 @@ import classes from './index.module.scss'
 
 type DesktopNavType = { hideBackground?: boolean } & Pick<MainMenu, 'menuCta' | 'tabs'>
 export const DesktopNav: React.FC<DesktopNavType> = ({ hideBackground, menuCta, tabs }) => {
-  const { user, isAdmin } = useAuth()
+  const { user } = useAuth()
+  const [isAdmin, setIsAdmin] = React.useState(false)
   const [activeTab, setActiveTab] = React.useState<number | undefined>()
   const [activeDropdown, setActiveDropdown] = React.useState<boolean | undefined>(false)
   const [backgroundStyles, setBackgroundStyles] = React.useState<any>({
@@ -33,6 +34,22 @@ export const DesktopNav: React.FC<DesktopNavType> = ({ hideBackground, menuCta, 
   const dropdownMenuRefs = [] as (HTMLDivElement | null)[]
 
   const starCount = useStarCount()
+
+  React.useEffect(() => {
+    if (!user) {
+      setIsAdmin(false)
+      return
+    }
+
+    fetch('/api/auth/is-admin')
+      .then((res) => res.json())
+      .then((data) => {
+        setIsAdmin(data.isAdmin === true)
+      })
+      .catch(() => {
+        setIsAdmin(false)
+      })
+  }, [user])
 
   React.useEffect(() => {
     if (activeTab !== undefined) {

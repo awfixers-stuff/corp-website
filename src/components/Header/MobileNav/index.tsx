@@ -30,6 +30,25 @@ type NavItems = Pick<MainMenu, 'menuCta' | 'tabs'>
 
 const MobileNavItems = ({ setActiveTab, tabs }) => {
   const { user, isAdmin } = useAuth()
+  const [adminChecked, setAdminChecked] = React.useState(false)
+
+  React.useEffect(() => {
+    if (!user) {
+      setAdminChecked(false)
+      return
+    }
+
+    fetch('/api/auth/is-admin')
+      .then((res) => res.json())
+      .then((data) => {
+        setAdminChecked(data.isAdmin === true)
+      })
+      .catch(() => {
+        setAdminChecked(false)
+      })
+  }, [user])
+
+  const showAdmin = adminChecked
   const { openModal } = useModal()
   const handleOnClick = (index) => {
     openModal(subMenuSlug)
@@ -291,7 +310,7 @@ export const MobileNav: React.FC<NavItems> = (props) => {
                   <GitHubIcon />
                   {starCount}
                 </a>
-                {user && isAdmin && (
+                {showAdmin && (
                   <Link href="/admin" className={classes.mobileMenuItem}>
                     Admin
                   </Link>
