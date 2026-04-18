@@ -2,7 +2,6 @@ import { revalidateRedirects } from '@hooks/revalidateRedirects'
 import { convexAdapter } from 'payload-convex-adapter'
 import { payloadConvexConfig } from '../payload-convex-config'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
-import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import {
@@ -536,11 +535,6 @@ export default buildConfig({
       collections: ['case-studies', 'pages', 'posts'],
       globals: ['get-started'],
       uploadsCollection: 'media',
-    }),
-    nestedDocsPlugin({
-      collections: ['pages'],
-      generateLabel: (_, doc) => doc.title as string,
-      generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug as string}`, ''),
     }),
     redirectsPlugin({
       collections: ['case-studies', 'pages', 'posts'],
