@@ -29,7 +29,7 @@ export const subMenuSlug = 'mobile-sub-menu'
 type NavItems = Pick<MainMenu, 'menuCta' | 'tabs'>
 
 const MobileNavItems = ({ setActiveTab, tabs }) => {
-  const { user } = useAuth()
+  const { user, isAdmin } = useAuth()
   const { openModal } = useModal()
   const handleOnClick = (index) => {
     openModal(subMenuSlug)
@@ -291,6 +291,11 @@ export const MobileNav: React.FC<NavItems> = (props) => {
                   <GitHubIcon />
                   {starCount}
                 </a>
+                {user && isAdmin && (
+                  <Link href="/admin" className={classes.mobileMenuItem}>
+                    Admin
+                  </Link>
+                )}
                 {user && <Avatar className={classes.avatar} />}
                 <DocSearch />
                 <div

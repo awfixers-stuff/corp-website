@@ -1,25 +1,85 @@
-import { clerkMiddleware } from '@clerk/nextjs/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextRequest, NextResponse } from 'next/server'
 
-const ADMIN_ORG_ID = process.env.ADMIN_ORG_ID
+import { routeAccess, checkAccess, type AccessPattern } from './access/routes'
 
-function isAdminRoute(req: NextRequest): boolean {
-  return req.nextUrl.pathname.startsWith('/admin')
+const PUBLIC_ROUTES = ['/', '/about', '/contact', '/sign-in', '/sign-up']
+const BOT_SIGNATURES = [
+  /bot/i,
+  /spider/i,
+  /crawl/i,
+  /slurp/i,
+  /mediapartners/i,
+  /googlebot/i,
+  /bingbot/i,
+  /duckduckbot/i,
+  /applebot/i,
+  /semrush/i,
+  /ahrefs/i,
+  /mj12bot/i,
+  /ptst/i,
+  /25980/i,
+  /^(?!.*(Chrome|Chromium|Firefox|Safari|Edge)).*$/i,
+]
+
+function isBotRequest(req: NextRequest): boolean {
+  const userAgent = req.headers.get('user-agent') || ''
+  const forwardedFor = req.headers.get('x-forwarded-for')
+  const realIp = req.headers.get('x-real-ip')
+
+  if (userAgent && BOT_SIGNATURES.some(sig => sig.test(userAgent))) {
+    return true
+  }
+
+  if (!userAgent || userAgent.length === 0) {
+    return true
+  }
+
+  if (forwardedFor && forwardedFor.split(',').length > 5) {
+    return true
+  }
+
+  return false
+}
+
+function getAccessPattern(pathname: string): AccessPattern | undefined {
+  for (const [route, pattern] of Object.entries(routeAccess)) {
+    if (route === '/') {
+      if (pathname === '/') return pattern
+      continue
+    }
+    if (pathname.startsWith(route)) return pattern
+  }
+  return undefined
 }
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isAdminRoute(req)) {
-    const authResult = await auth()
+  const pathname = req.nextUrl.pathname
+  const accessPattern = getAccessPattern(pathname)
 
-    if (!authResult.userId) {
-      return new NextResponse('Unauthorized', { status: 401 })
+  if (!accessPattern) {
+    return NextResponse.next()
+  }
+
+  if (accessPattern.type === 'public') {
+    return NextResponse.next()
+  }
+
+  if (isBotRequest(req)) {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
+
+  const authResult = await auth()
+  const { userId, orgId } = authResult
+
+  const hasAccess = checkAccess(accessPattern, userId, orgId)
+
+  if (!hasAccess) {
+    if (!userId) {
+      return auth().redirectToSignIn({ returnBackUrl: pathname })
     }
 
-    if (authResult.orgId !== ADMIN_ORG_ID) {
-      return new NextResponse('Forbidden: You must be a member of the allowed organization', {
-        status: 403,
-      })
-    }
+    return NextResponse.redirect(new URL('/', req.url))
   }
 
   return NextResponse.next()

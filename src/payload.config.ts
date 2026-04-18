@@ -86,6 +86,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    user: Users.slug,
     components: {
       afterNavLinks: ['@root/components/AfterNavActions'],
     },

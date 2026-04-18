@@ -18,7 +18,7 @@ import classes from './index.module.scss'
 
 type DesktopNavType = { hideBackground?: boolean } & Pick<MainMenu, 'menuCta' | 'tabs'>
 export const DesktopNav: React.FC<DesktopNavType> = ({ hideBackground, menuCta, tabs }) => {
-  const { user } = useAuth()
+  const { user, isAdmin } = useAuth()
   const [activeTab, setActiveTab] = React.useState<number | undefined>()
   const [activeDropdown, setActiveDropdown] = React.useState<boolean | undefined>(false)
   const [backgroundStyles, setBackgroundStyles] = React.useState<any>({
@@ -281,6 +281,11 @@ export const DesktopNav: React.FC<DesktopNavType> = ({ hideBackground, menuCta, 
                 <GitHubIcon />
                 {starCount}
               </a>
+              {user && isAdmin && (
+                <Link href="/admin" className={classes.login} prefetch={false}>
+                  Admin
+                </Link>
+              )}
               {user ? (
                 <Avatar className={classes.avatar} />
               ) : (
