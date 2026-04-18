@@ -2,11 +2,12 @@ import {
   $convertFromMarkdownString,
   $createServerBlockNode,
   $isServerBlockNode,
-  type DefaultTypedEditorState,
   getEnabledNodes,
   objectToFrontmatter,
   type SanitizedServerEditorConfig,
   type SerializedBlockNode,
+  type SerializedEditorState,
+  type SerializedLexicalNode,
   ServerBlockNode,
 } from '@payloadcms/richtext-lexical'
 import { createHeadlessEditor } from '@payloadcms/richtext-lexical/lexical/headless'
@@ -128,7 +129,7 @@ export const lexicalToMDX = ({
   frontMatterData,
 }: {
   editorConfig: SanitizedServerEditorConfig
-  editorState: DefaultTypedEditorState<SerializedBlockNode>
+  editorState: SerializedEditorState<SerializedLexicalNode>
   frontMatterData?: FrontMatterData
 }): string => {
   cachedServerEditorConfig = editorConfig
