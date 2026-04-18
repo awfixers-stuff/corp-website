@@ -3,15 +3,6 @@
   "buildCommand": "bun run build",
   "installCommand": "bun --bun install",
   "bunVersion": "1.3.11",
-  "github": {
-    "silent": true
-  },
-  "crons": [
-    {
-      "path": "/api/sync-ch",
-      "schedule": "0 2 * * *"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
