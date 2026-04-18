@@ -26,7 +26,6 @@
     "build:skipDocs": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "postbuild": "next-sitemap --config ./next-sitemap.config.cjs",
     "analyze": "ANALYZE=true next build",
-    
     "caddy": "caddy run --config Caddyfile",
     "start": "next start",
     "lint": "next lint",
@@ -56,6 +55,7 @@
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-portal": "^1.1.2",
     "@radix-ui/react-tabs": "^1.1.1",
+    "@sentry/nextjs": "^10",
     "cheerio": "^1.0.0-rc.12",
     "convex": "^1.35.1",
     "cross-env": "7.0.3",
@@ -69,6 +69,7 @@
     "node-cron": "^3.0.3",
     "payload": "^3.83.0",
     "payload-convex-adapter": "^1.0.3",
+    "posthog-js": "^1.369.2",
     "prism-react-renderer": "^2.3.1",
     "qs-esm": "7.0.2",
     "react": "19.2.3",

@@ -5,6 +5,7 @@ import { ArrowIcon } from '@root/icons/ArrowIcon'
 import { ErrorIcon } from '@root/icons/ErrorIcon'
 import { getCookie } from '@root/utilities/get-cookie'
 import { usePathname, useRouter } from 'next/navigation'
+import posthog from 'posthog-js'
 import React, { useId } from 'react'
 import { toast } from 'sonner'
 
@@ -62,6 +63,9 @@ export const NewsletterSignUp: React.FC<NewsletterSignUpProps> = (props) => {
         const pageUri = `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`
         const slugParts = pathname?.split('/')
         const pageName = slugParts?.at(-1) === '' ? 'Home' : slugParts?.at(-1)
+        posthog.capture('newsletter_subscribed', {
+          page: pathname,
+        })
         toast.promise(
           fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/form-submissions`, {
             body: JSON.stringify({

@@ -47,3 +47,7 @@ next-env.d.ts
 !/.idea/payload.iml
 
 /db/*
+.env.local
+
+# Sentry Config File
+.env.sentry-build-plugin

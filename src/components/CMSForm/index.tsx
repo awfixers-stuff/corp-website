@@ -7,6 +7,7 @@ import Form from '@forms/Form/index'
 import { CrosshairIcon } from '@root/icons/CrosshairIcon/index'
 import { getCookie } from '@root/utilities/get-cookie'
 import { usePathname, useRouter } from 'next/navigation'
+import posthog from 'posthog-js'
 import * as React from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { toast } from 'sonner'
@@ -108,6 +109,11 @@ const RenderForm = ({ form, hiddenFields }: { form: FormType; hiddenFields: stri
           setIsLoading(false)
           setHasSubmitted(true)
           toast.success('Form submitted successfully!')
+          posthog.capture('form_submitted', {
+            form_id: formID,
+            form_name: customID ?? formID,
+            page: pathname,
+          })
 
           if (confirmationType === 'redirect' && formRedirect) {
             const { url } = formRedirect

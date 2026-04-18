@@ -15,6 +15,7 @@ import { useHeaderObserver } from '@root/providers/HeaderIntersectionObserver/in
 import { useStarCount } from '@root/utilities/use-star-count'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import posthog from 'posthog-js'
 import * as React from 'react'
 
 import { FullLogo } from '../../../graphics/FullLogo/index'
@@ -29,26 +30,7 @@ export const subMenuSlug = 'mobile-sub-menu'
 type NavItems = Pick<MainMenu, 'menuCta' | 'tabs'>
 
 const MobileNavItems = ({ setActiveTab, tabs }) => {
-  const { user, isAdmin } = useAuth()
-  const [adminChecked, setAdminChecked] = React.useState(false)
-
-  React.useEffect(() => {
-    if (!user) {
-      setAdminChecked(false)
-      return
-    }
-
-    fetch('/api/auth/is-admin')
-      .then((res) => res.json())
-      .then((data) => {
-        setAdminChecked(data.isAdmin === true)
-      })
-      .catch(() => {
-        setAdminChecked(false)
-      })
-  }, [user])
-
-  const showAdmin = adminChecked
+  const { user } = useAuth()
   const { openModal } = useModal()
   const handleOnClick = (index) => {
     openModal(subMenuSlug)
@@ -263,7 +245,7 @@ const SubMenuModal: React.FC<
 export const MobileNav: React.FC<NavItems> = (props) => {
   const { closeAllModals, isModalOpen, openModal } = useModal()
   const { headerTheme } = useHeaderObserver()
-  const { user } = useAuth()
+  const { user, isAdmin } = useAuth()
   const pathname = usePathname()
   const [activeTab, setActiveTab] = React.useState<number | undefined>()
 
@@ -275,8 +257,10 @@ export const MobileNav: React.FC<NavItems> = (props) => {
 
   const toggleModal = React.useCallback(() => {
     if (isMenuOpen) {
+      posthog.capture('mobile_menu_closed')
       closeAllModals()
     } else {
+      posthog.capture('mobile_menu_opened')
       openModal(modalSlug)
     }
   }, [isMenuOpen, closeAllModals, openModal])
@@ -310,7 +294,7 @@ export const MobileNav: React.FC<NavItems> = (props) => {
                   <GitHubIcon />
                   {starCount}
                 </a>
-                {showAdmin && (
+                {isAdmin && (
                   <Link href="/admin" className={classes.mobileMenuItem}>
                     Admin
                   </Link>

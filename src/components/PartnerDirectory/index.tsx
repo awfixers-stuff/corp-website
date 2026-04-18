@@ -8,6 +8,7 @@ import { Gutter } from '@components/Gutter'
 import { PartnerGrid } from '@components/PartnerGrid'
 import { ChevronDownIcon } from '@root/icons/ChevronDownIcon'
 import { CloseIcon } from '@root/icons/CloseIcon'
+import posthog from 'posthog-js'
 import { useEffect, useState } from 'react'
 
 import classes from './index.module.scss'
@@ -110,6 +111,11 @@ export const PartnerDirectory: React.FC<{
     filter: string,
     checked: boolean,
   ) => {
+    posthog.capture('partner_filter_applied', {
+      filter_checked: checked,
+      filter_group: group,
+      filter_value: filter,
+    })
     setFilters((prev) => {
       return {
         ...prev,
@@ -119,6 +125,7 @@ export const PartnerDirectory: React.FC<{
   }
 
   const handleReset = () => {
+    posthog.capture('partner_filter_reset')
     setFilters({
       budgets: [],
       industries: [],

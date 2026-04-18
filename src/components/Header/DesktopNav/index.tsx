@@ -9,6 +9,7 @@ import { useAuth } from '@root/providers/Auth/index'
 import { useHeaderObserver } from '@root/providers/HeaderIntersectionObserver/index'
 import { useStarCount } from '@root/utilities/use-star-count'
 import Link from 'next/link'
+import posthog from 'posthog-js'
 import * as React from 'react'
 
 import { FullLogo } from '../../../graphics/FullLogo/index'
@@ -18,8 +19,7 @@ import classes from './index.module.scss'
 
 type DesktopNavType = { hideBackground?: boolean } & Pick<MainMenu, 'menuCta' | 'tabs'>
 export const DesktopNav: React.FC<DesktopNavType> = ({ hideBackground, menuCta, tabs }) => {
-  const { user } = useAuth()
-  const [isAdmin, setIsAdmin] = React.useState(false)
+  const { user, isAdmin } = useAuth()
   const [activeTab, setActiveTab] = React.useState<number | undefined>()
   const [activeDropdown, setActiveDropdown] = React.useState<boolean | undefined>(false)
   const [backgroundStyles, setBackgroundStyles] = React.useState<any>({
@@ -34,22 +34,6 @@ export const DesktopNav: React.FC<DesktopNavType> = ({ hideBackground, menuCta, 
   const dropdownMenuRefs = [] as (HTMLDivElement | null)[]
 
   const starCount = useStarCount()
-
-  React.useEffect(() => {
-    if (!user) {
-      setIsAdmin(false)
-      return
-    }
-
-    fetch('/api/auth/is-admin')
-      .then((res) => res.json())
-      .then((data) => {
-        setIsAdmin(data.isAdmin === true)
-      })
-      .catch(() => {
-        setIsAdmin(false)
-      })
-  }, [user])
 
   React.useEffect(() => {
     if (activeTab !== undefined) {
@@ -292,6 +276,7 @@ export const DesktopNav: React.FC<DesktopNavType> = ({ hideBackground, menuCta, 
                 aria-label="Payload's GitHub"
                 className={classes.github}
                 href="https://github.com/awfixers-stuff/payload"
+                onClick={() => posthog.capture('github_link_clicked', { location: 'desktop_nav' })}
                 rel="noreferrer"
                 target="_blank"
               >

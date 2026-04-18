@@ -1,6 +1,7 @@
 'use client'
 import { Tooltip } from '@components/Tooltip/index'
 import { CopyIcon } from '@root/icons/CopyIcon/index'
+import posthog from 'posthog-js'
 import React, { useCallback, useRef, useState } from 'react'
 
 import classes from './index.module.scss'
@@ -31,6 +32,9 @@ export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({
       ref.current.setSelectionRange(0, copyValue.length + 1)
       document.execCommand('copy')
 
+      posthog.capture('cli_command_copied', {
+        command: copyValue,
+      })
       setCopied(true)
     }
   }, [value])

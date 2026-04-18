@@ -1,9 +1,11 @@
 'use client'
 
-import { useAuth as useClerk, useUser } from '@clerk/nextjs'
+import { useAuth as useClerk, useOrganization, useUser } from '@clerk/nextjs'
+import posthog from 'posthog-js'
 import React, { createContext, use, useEffect, useState } from 'react'
 
 import type { User } from '../../payload-types'
+import { isAdmin as checkIsAdmin } from '../../utilities/org-membership'
 
 type AuthContext = {
   logout: () => Promise<void>
@@ -17,12 +19,11 @@ const Context = createContext<AuthContext>({} as AuthContext)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isLoaded, userId } = useClerk()
   const { user: clerkUser, isLoaded: isUserLoaded } = useUser()
+  const { organization } = useOrganization()
   const [user, setUser] = useState<null | User>(null)
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [isAdminState, setIsAdminState] = useState(false)
 
-  const orgId = clerkUser?.organizationMemberships.find(
-    (m) => m.organization.id === clerkUser?.organizationId,
-  )?.organization.id ?? null
+  const orgId = organization?.id ?? null
 
   useEffect(() => {
     if (!isLoaded || !isUserLoaded) {
@@ -40,6 +41,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         firstName: clerkUser.firstName || '',
         lastName: clerkUser.lastName || '',
       } as User)
+
+      posthog.identify(userId, {
+        email: email || '',
+        firstName: clerkUser.firstName || '',
+        lastName: clerkUser.lastName || '',
+      })
     } else {
       setUser(null)
     }
@@ -47,19 +54,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (!isLoaded || !userId || !orgId) {
-      setIsAdmin(false)
+      setIsAdminState(false)
       return
     }
 
-    fetch('/api/auth/is-admin')
-      .then((res) => res.json())
-      .then((data) => {
-        setIsAdmin(data.isAdmin === true)
-      })
-      .catch(() => {
-        setIsAdmin(false)
-      })
+    setIsAdminState(checkIsAdmin(orgId))
   }, [userId, orgId, isLoaded])
+
+  const isAdmin = isAdminState
 
   const logout = async () => {
     // Clerk handles logout - redirect to sign-in
