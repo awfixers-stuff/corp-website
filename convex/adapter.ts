@@ -32,7 +32,7 @@ export const {
   collectionWhereOrderQuery: queryAdapter.collectionWhereOrderQuery.convex({ service: service as any }),
   collectionWhereLimitQuery: queryAdapter.collectionWhereLimitQuery.convex({ service: service as any }),
   collectionWherePaginateQuery: queryAdapter.collectionWherePaginateQuery.convex({ service: service as any }),
-  collectionWhereOrderLimitQuery: queryAdapter.collectionWhereLimitQuery.convex({ service: service as any }),
+  collectionWhereOrderLimitQuery: queryAdapter.collectionWhereOrderLimitQuery.convex({ service: service as any }),
   collectionWhereOrderPaginateQuery: queryAdapter.collectionWhereOrderPaginateQuery.convex({ service: service as any }),
   collectionOrderQuery: queryAdapter.collectionOrderQuery.convex({ service: service as any }),
   collectionOrderLimitQuery: queryAdapter.collectionOrderLimitQuery.convex({ service: service as any }),

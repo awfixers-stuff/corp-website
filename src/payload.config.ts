@@ -300,7 +300,7 @@ export default buildConfig({
               label: ({ t }) => t('fields:enterURL'),
               required: true,
               validate: (value: string, options) => {
-                return
+                return true
               },
             } as TextField,
           ]

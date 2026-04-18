@@ -24,7 +24,7 @@ export function checkAccess(
     case 'authenticated':
       return !!userId
     case 'org':
-      return orgId === access.orgId
+      return !!access.orgId && orgId === access.orgId
     case 'orgPrefix':
       return orgId?.startsWith(access.prefix) ?? false
     case 'orgs':

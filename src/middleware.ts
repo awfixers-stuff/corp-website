@@ -1,4 +1,4 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { clerkMiddleware } from '@clerk/nextjs/server'
 import { NextRequest, NextResponse } from 'next/server'
 
 import { routeAccess, checkAccess, type AccessPattern } from './access/routes'
@@ -66,7 +66,7 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   if (isBotRequest(req)) {
-    return NextResponse.redirect(new URL('/login', req.url))
+    return NextResponse.redirect(new URL('/sign-in', req.url))
   }
 
   const authResult = await auth()
@@ -76,7 +76,7 @@ export default clerkMiddleware(async (auth, req) => {
 
   if (!hasAccess) {
     if (!userId) {
-      return auth().redirectToSignIn({ returnBackUrl: pathname })
+      return authResult.redirectToSignIn({ returnBackUrl: pathname })
     }
 
     return NextResponse.redirect(new URL('/', req.url))
