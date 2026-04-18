@@ -72,7 +72,7 @@ export default clerkMiddleware(async (auth, req) => {
   const authResult = await auth()
   const { userId, orgId } = authResult
 
-  const hasAccess = checkAccess(accessPattern, userId, orgId)
+  const hasAccess = checkAccess(accessPattern, userId, orgId ?? null)
 
   if (!hasAccess) {
     if (!userId) {
