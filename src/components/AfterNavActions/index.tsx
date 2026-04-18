@@ -2,9 +2,6 @@
 
 import RedeployButton from '@components/RedeployButton'
 import RefreshMdxToLexicalButton from '@components/RefreshMdxToLexicalButton'
-import SyncCommunityHelp from '@components/SyncCommunityHelp'
-import SyncDocsButton from '@components/SyncDocsButton'
-import SyncToAlgolia from '@components/SyncToAlgolia'
 import React from 'react'
 
 import './index.scss'

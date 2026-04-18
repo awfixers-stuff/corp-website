@@ -83,9 +83,9 @@ const nextConfig = withBundleAnalyzer({
       },
       {
         protocol: 'https',
-        hostname: process.env.BLOB_STORE_ID,
+        hostname: process.env.BLOB_STORE_ID || '',
       },
-    ].filter(Boolean),
+    ].filter(Boolean).filter(p => p.hostname && p.hostname !== ''),
   },
   sassOptions: {
     silenceDeprecations: ['legacy-js-api', 'import'], // https://github.com/vercel/next.js/issues/71638

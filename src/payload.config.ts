@@ -1,5 +1,6 @@
 import { revalidateRedirects } from '@hooks/revalidateRedirects'
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { convexAdapter } from 'payload-convex-adapter'
+import { payloadConvexConfig } from '../payload-convex-config'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
@@ -86,10 +87,6 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
-    autoLogin: {
-      email: 'dev2@corp.awfixer.me',
-      password: 'test',
-    },
     components: {
       afterNavLinks: ['@root/components/AfterNavActions'],
     },
@@ -287,9 +284,7 @@ export default buildConfig({
     Budgets,
   ],
   cors: [process.env.PAYLOAD_PUBLIC_APP_URL || '', 'https://corp.awfixer.me'].filter(Boolean),
-  db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
-  }),
+  db: convexAdapter(payloadConvexConfig) as any,
   defaultDepth: 1,
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [

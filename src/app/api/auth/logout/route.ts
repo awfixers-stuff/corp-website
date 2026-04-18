@@ -1,8 +1,17 @@
-import { cookies } from 'next/headers'
+import { auth } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
 export async function POST() {
-  const cookieStore = await cookies()
-  cookieStore.delete('payload-token')
+  try {
+    const { userId } = await auth()
 
-  return Response.json({ success: true })
+    if (!userId) {
+      return NextResponse.json({ message: 'Not authenticated' }, { status: 401 })
+    }
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Logout error:', error)
+    return NextResponse.json({ message: 'Logout failed' }, { status: 500 })
+  }
 }

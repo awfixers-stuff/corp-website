@@ -1,3 +1,8 @@
+import { NextResponse } from 'next/server'
+
 export async function POST() {
-  return Response.json({ message: 'Password reset successful' })
+  return NextResponse.json({
+    message:
+      'Password reset is handled by Clerk. Please visit the Clerk-hosted reset password page.',
+  })
 }

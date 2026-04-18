@@ -14,20 +14,7 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
-  auth: {
-    cookies: {
-      domain: process.env.COOKIE_DOMAIN,
-      sameSite:
-        process.env.NODE_ENV === 'production' && !process.env.DISABLE_SECURE_COOKIE
-          ? 'None'
-          : undefined,
-      secure:
-        process.env.NODE_ENV === 'production' && !process.env.DISABLE_SECURE_COOKIE
-          ? true
-          : undefined,
-    },
-    tokenExpiration: 28800, // 8 hours
-  },
+  auth: false,
   fields: [
     // Override default email field to restrict public read access
     {
@@ -79,6 +66,11 @@ export const Users: CollectionConfig = {
       hasMany: true,
       options: ['admin', 'public'],
       required: true,
+    },
+    {
+      name: 'clerkUserId',
+      type: 'text',
+      unique: true,
     },
   ],
 }

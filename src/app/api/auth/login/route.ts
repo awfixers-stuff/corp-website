@@ -1,52 +1,33 @@
-import { cookies } from 'next/headers'
-
-// @ts-expect-error - payload is loaded dynamically
-const payload = (await import('payload')).default
+import { auth, clerkClient } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    const { email, password } = body
+    const { userId } = await auth()
+    const clerk = await clerkClient()
 
-    if (!email || !password) {
-      return Response.json({ message: 'Email and password are required' }, { status: 400 })
+    if (!userId) {
+      return NextResponse.json({ message: 'Not authenticated' }, { status: 401 })
     }
 
-    const result = await payload.login({
-      collection: 'users',
-      data: { email, password },
-    })
+    const user = await clerk.users.getUser(userId)
 
-    if (!result.user) {
-      return Response.json({ message: 'Invalid login credentials' }, { status: 401 })
+    if (!user) {
+      return NextResponse.json({ message: 'User not found' }, { status: 404 })
     }
 
-    const cookieStore = await cookies()
-    if (result.cookies) {
-      for (const cookie of result.cookies as string[]) {
-        const [nameValue] = cookie.split(';')
-        const [cookieName, cookieValue] = nameValue.split('=')
-        const options = cookie.split(';').slice(1).join(';').trim()
+    const email = user.emailAddresses.find((e) => e.id === user.primaryEmailAddressId)?.emailAddress
 
-        cookieStore.set(cookieName, cookieValue, {
-          httpOnly: true,
-          path: '/',
-        })
-      }
-    }
-
-    return Response.json({
+    return NextResponse.json({
       user: {
-        id: result.user.id,
-        email: result.user.email,
-        firstName: result.user.firstName,
-        lastName: result.user.lastName,
-        roles: result.user.roles,
-        photo: result.user.photo,
-        twitter: result.user.twitter,
+        id: userId,
+        email: email || '',
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
       },
     })
-  } catch {
-    return Response.json({ message: 'Invalid login credentials' }, { status: 401 })
+  } catch (error) {
+    console.error('Login error:', error)
+    return NextResponse.json({ message: 'Authentication failed' }, { status: 500 })
   }
 }
