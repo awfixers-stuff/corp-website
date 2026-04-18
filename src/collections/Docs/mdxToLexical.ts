@@ -4,6 +4,7 @@ import {
   $convertFromMarkdownString,
   $createServerBlockNode,
   $isServerBlockNode,
+  type DefaultTypedEditorState,
   getEnabledNodes,
   objectToFrontmatter,
   type SanitizedServerEditorConfig,
