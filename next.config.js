@@ -175,14 +175,11 @@ const nextConfig = withBundleAnalyzer({
   },
 })
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+import { withSentryConfig } from "@sentry/nextjs";
 
+const configWithPayload = withPayload(nextConfig, { devBundleServerPackages: false });
 
-// Injected content via Sentry wizard below
-
-const { withSentryConfig } = require("@sentry/nextjs");
-
-module.exports = withSentryConfig(module.exports, {
+export default withSentryConfig(configWithPayload, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
