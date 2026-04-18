@@ -46,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [isLoaded, isUserLoaded, userId, clerkUser])
 
   useEffect(() => {
-    if (!userId || !orgId) {
+    if (!isLoaded || !userId || !orgId) {
       setIsAdmin(false)
       return
     }
@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       .catch(() => {
         setIsAdmin(false)
       })
-  }, [userId, orgId])
+  }, [userId, orgId, isLoaded])
 
   const logout = async () => {
     // Clerk handles logout - redirect to sign-in

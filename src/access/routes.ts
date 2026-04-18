@@ -1,7 +1,7 @@
 export type AccessPattern =
   | { type: 'public' }
   | { type: 'authenticated' }
-  | { type: 'org'; orgId: string }
+  | { type: 'org'; orgId?: string }
   | { type: 'orgPrefix'; prefix: string }
   | { type: 'orgs'; orgIds: string[] }
 
@@ -9,7 +9,7 @@ export type RouteAccessMap = Record<string, AccessPattern>
 
 export const routeAccess: RouteAccessMap = {
   '/': { type: 'public' },
-  '/admin': { type: 'org'; orgId: process.env.ADMIN_ORG_ID! },
+  '/admin': { type: 'org', orgId: process.env.ADMIN_ORG_ID || '' },
   '/dashboard': { type: 'authenticated' },
 }
 
