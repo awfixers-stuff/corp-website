@@ -12,10 +12,8 @@ const AfterNavActions: React.FC = () => {
   return (
     <div className={baseClass}>
       <span className={`${baseClass}__group-title`}>Admin Actions</span>
-      <SyncDocsButton />
       <RefreshMdxToLexicalButton />
       <RedeployButton />
-      <SyncToAlgolia />
     </div>
   )
 }
