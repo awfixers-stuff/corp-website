@@ -14,7 +14,7 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
-  auth: false,
+  auth: true,
   fields: [
     // Override default email field to restrict public read access
     {

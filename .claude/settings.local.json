@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.\\(ts|tsx|js\\)$\")",
+      "Bash(file /home/awfixer/.claude/projects/-home-awfixer-Projects-corp-website/e7edc9cc-0077-4be2-9632-b02f60b30e2e/tool-results/*.txt)",
+      "mcp__context7__query-docs"
+    ]
+  }
+}
